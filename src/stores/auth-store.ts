@@ -22,8 +22,9 @@ const authStore = createStore<AuthState>((set) => ({
     }
 }));
 
-export const selectAccessToken = (state: AuthState) => state.accessToken;
-
+const selectAccessToken = (state: AuthState) => state.accessToken;
 export const useAccessToken = () => useStore(authStore, selectAccessToken);
+
+export const useAuthActions = () => useStore(authStore, (state) => state.actions);
 
 export default authStore;
