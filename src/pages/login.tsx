@@ -1,11 +1,19 @@
-import {useLoginMutation} from "@/api/auth.ts";
+import {useLogin} from "@/hooks/useLogin.ts";
 import {useAuthActions} from "@/stores/auth-store.ts";
 import {useRouter} from "@tanstack/react-router";
+import {useForm} from "react-hook-form";
+
+type LoginFormData = {
+    username: string;
+    password: string;
+}
 
 function Login() {
-    const loginMutation = useLoginMutation();
+    const loginMutation = useLogin();
     const {setAccessToken} = useAuthActions();
     const router = useRouter();
+
+    const {register, handleSubmit, formState: {errors}} = useForm<LoginFormData>();
 
     const handleLogin = async (username:string, password: string) => {
         try {
@@ -19,26 +27,31 @@ function Login() {
     }
 
     return (
-        <div>
-            <h1>Login</h1>
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.currentTarget);
-                const username = formData.get("username") as string;
-                const password = formData.get("password") as string;
-                handleLogin(username, password).then();
-            }}>
-                <div>
-                    <label htmlFor="username">Username:</label>
-                    <input type="text" id="username" name="username" required/>
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" id="password" name="password" required/>
-                </div>
-                <button type="submit" disabled={loginMutation.isPending}>
-                    Login
+        <div className={"flex flex-col items-center justify-center"}>
+            <h1 className={"mt-8 text-2xl text-accent-foreground"}>Login</h1>
+            <form onSubmit={handleSubmit(({username, password}) => handleLogin(username, password))} className={"flex flex-col items-center gap-4 mt-6 w-full max-w-md px-4"}>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    {...register("username", {required: "Username is required"})}
+                    {...register("username", {minLength: {value: 6, message: "Username must be at least 6 characters"}})}
+                    className={"border p-2 rounded w-full"}
+                />
+                {errors.username && <span className={"text-red-500"}>{errors.username.message}</span>}
+
+                <input
+                    type="password"
+                    placeholder="Password"
+                    {...register("password", {required: "Password is required"})}
+                    className={"border p-2 rounded w-full"}
+                />
+                {errors.password && <span className={"text-red-500"}>{errors.password.message}</span>}
+
+                <button type="submit" className={"bg-primary text-primary-foreground p-2 rounded-lg w-1/2"} disabled={loginMutation.isPending}>
+                    {loginMutation.isPending ? "Logging in..." : "Login"}
                 </button>
+
+                {loginMutation.error && <span className={"text-red-500"}>{loginMutation.error.message}</span>}
             </form>
         </div>
     );

@@ -59,10 +59,10 @@
   --secondary-foreground: oklch(0.828 0.004 121.576);
   --muted: oklch(0.433 0.022 245.761);
   --muted-foreground: oklch(0.874 0.01 252.82);
-  --accent: oklch(0.387 0.032 174.493);
+  --accent: oklch(0.495 0.028 162.274);
   --accent-foreground: oklch(0.755 0.031 359.059);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.861 0.033 52.282);
+  --border: oklch(0.889 0.013 48.575);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);
   --chart-1: oklch(0.646 0.222 41.116);
