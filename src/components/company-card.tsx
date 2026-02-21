@@ -1,5 +1,5 @@
 import type {Company} from "@/api/types.ts";
-import {Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Card, CardAction, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Link} from "@tanstack/react-router";
 
@@ -24,14 +24,16 @@ export function CompanyCard({company}: CompanyCardProps) {
 
     return (
         <Card>
-            <CardHeader className={"grid grid-cols-2"}>
+            <CardHeader className={"grid grid-cols-2 items-center"}>
                 <CardTitle className={"text-xl font-bold"}>
                     {company.name}
                 </CardTitle>
-                <CardDescription>
-                    {company.logoUrl && <img src={company.logoUrl} alt={`${company.name} logo`}
-                                             className="max-w-full max-h-full object-contain"/>}
-                </CardDescription>
+                {company.logoUrl && (
+                    <div className="flex justify-end items-center h-16">
+                        <img src={company.logoUrl} alt={`${company.name} logo`}
+                             className="max-w-full max-h-full object-contain"/>
+                    </div>
+                )}
             </CardHeader>
             <CardContent className={"text-lg"}>
                     <p>Description: {company.description}</p>
