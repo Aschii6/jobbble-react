@@ -1,4 +1,4 @@
-function Home() {
+function HomePage() {
     return (
         <div className={"flex flex-col items-center justify-center my-2 gap-2"}>
             <h1 className={"text-3xl text-primary-foreground"}>Welcome to Jobbble</h1>
@@ -15,4 +15,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default HomePage;

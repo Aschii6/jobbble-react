@@ -9,7 +9,7 @@ type RegisterFormData = {
     password: string;
 }
 
-function Signup() {
+function SignupPage() {
     const registerMutation = useRegister();
     const {setAccessToken} = useAuthActions();
     const router = useRouter();
@@ -66,4 +66,4 @@ function Signup() {
     );
 }
 
-export default Signup;
+export default SignupPage;

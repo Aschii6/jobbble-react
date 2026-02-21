@@ -8,7 +8,7 @@ type LoginFormData = {
     password: string;
 }
 
-function Login() {
+function LoginPage() {
     const loginMutation = useLogin();
     const {setAccessToken} = useAuthActions();
     const router = useRouter();
@@ -22,7 +22,7 @@ function Login() {
             const from = router.state.location.search?.from || "/dashboard";
             router.navigate({to: from}).then();
         } catch (error) {
-            console.error("Login failed:", error);
+            console.error("LoginPage failed:", error);
         }
     }
 
@@ -48,7 +48,7 @@ function Login() {
                 {errors.password && <span className={"text-red-500"}>{errors.password.message}</span>}
 
                 <button type="submit" className={"bg-primary text-primary-foreground p-2 rounded-lg w-1/2"} disabled={loginMutation.isPending}>
-                    {loginMutation.isPending ? "Logging in..." : "Login"}
+                    {loginMutation.isPending ? "Logging in..." : "LoginPage"}
                 </button>
 
                 {loginMutation.error && <span className={"text-red-500"}>{loginMutation.error.message}</span>}
@@ -57,4 +57,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default LoginPage;
