@@ -7,6 +7,7 @@ import {requireAuth} from "@/lib/auth.ts";
 import NavBar from "@/components/nav-bar.tsx";
 import CompaniesPage from "@/pages/companies-page.tsx";
 import CompanyDetailsPage from "@/pages/company-details-page.tsx";
+import NewCompanyPage from "@/pages/new-company-page.tsx";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -49,6 +50,13 @@ const companiesRoute = createRoute({
     beforeLoad: ({location}) => requireAuth(location.pathname),
 });
 
+const addCompanyRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/companies/new",
+    component: NewCompanyPage,
+    beforeLoad: ({location}) => requireAuth(location.pathname),
+});
+
 const companyDetailsRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/companies/$companyId",
@@ -62,6 +70,7 @@ const routeTree = rootRoute.addChildren([
     signupRoute,
     dashboardRoute,
     companiesRoute,
+    addCompanyRoute,
     companyDetailsRoute,
 ])
 

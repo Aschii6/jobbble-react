@@ -23,7 +23,7 @@ export function CompanyCard({company}: CompanyCardProps) {
     );*/
 
     return (
-        <Card>
+        <Card className={"flex flex-col p-3 gap-3"}>
             <CardHeader className={"grid grid-cols-2 items-center"}>
                 <CardTitle className={"text-xl font-bold"}>
                     {company.name}
@@ -31,22 +31,22 @@ export function CompanyCard({company}: CompanyCardProps) {
                 {company.logoUrl && (
                     <div className="flex justify-end items-center h-16">
                         <img src={company.logoUrl} alt={`${company.name} logo`}
-                             className="max-w-full max-h-full object-contain"/>
+                             className="max-h-full object-contain"/>
                     </div>
                 )}
             </CardHeader>
-            <CardContent className={"text-lg"}>
+            <CardContent className={"text-lg grow"}>
                     <p>Description: {company.description}</p>
                     <p>Location: {company.location}</p>
                     {company.websiteUrl &&
                         <p>Website: <a href={company.websiteUrl} target="_blank" rel="noopener noreferrer"
-                                       className="text-blue-500">{company.websiteUrl}</a></p>}
-                <CardAction>
-                    <Link to="/companies/$companyId" params={{companyId: company.id}}>
-                        <Button variant={"outline"} className={"border rounded-xl text-lg h-max mt-2"}>View Details</Button>
-                    </Link>
-                </CardAction>
+                                       className="text-blue-500 hover:text-blue-400">{company.websiteUrl}</a></p>}
             </CardContent>
+            <CardAction className={"flex justify-end"}>
+                <Link to="/companies/$companyId" params={{companyId: company.id}}>
+                    <Button variant={"outline"} className={"border rounded-xl text-lg h-max"}>View Details</Button>
+                </Link>
+            </CardAction>
         </Card>
     );
 }
