@@ -1,10 +1,12 @@
 import {createRootRoute, createRoute, Outlet} from "@tanstack/react-router";
-import Home from "@/pages/home.tsx";
-import Login from "@/pages/login.tsx";
-import Signup from "@/pages/signup.tsx";
-import Dashboard from "@/pages/dashboard.tsx";
+import HomePage from "@/pages/home-page.tsx";
+import LoginPage from "@/pages/login-page.tsx";
+import SignupPage from "@/pages/signup-page.tsx";
+import DashboardPage from "@/pages/dashboard-page.tsx";
 import {requireAuth} from "@/lib/auth.ts";
 import NavBar from "@/components/nav-bar.tsx";
+import CompaniesPage from "@/pages/companies-page.tsx";
+import CompanyDetailsPage from "@/pages/company-details-page.tsx";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -18,25 +20,39 @@ const rootRoute = createRootRoute({
 const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/",
-    component: Home,
+    component: HomePage,
 });
 
 const loginRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/login",
-    component: Login,
+    component: LoginPage,
 });
 
 const signupRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/signup",
-    component: Signup,
+    component: SignupPage,
 });
 
 const dashboardRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/dashboard",
-    component: Dashboard,
+    component: DashboardPage,
+    beforeLoad: ({location}) => requireAuth(location.pathname),
+});
+
+const companiesRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/companies",
+    component: CompaniesPage,
+    beforeLoad: ({location}) => requireAuth(location.pathname),
+});
+
+const companyDetailsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/companies/$companyId",
+    component: CompanyDetailsPage,
     beforeLoad: ({location}) => requireAuth(location.pathname),
 });
 
@@ -45,6 +61,8 @@ const routeTree = rootRoute.addChildren([
     loginRoute,
     signupRoute,
     dashboardRoute,
+    companiesRoute,
+    companyDetailsRoute,
 ])
 
 export {routeTree}

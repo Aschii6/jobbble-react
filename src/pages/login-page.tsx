@@ -22,7 +22,7 @@ function LoginPage() {
             const from = router.state.location.search?.from || "/dashboard";
             router.navigate({to: from}).then();
         } catch (error) {
-            console.error("LoginPage failed:", error);
+            console.error("Login failed:", error);
         }
     }
 
@@ -48,7 +48,7 @@ function LoginPage() {
                 {errors.password && <span className={"text-red-500"}>{errors.password.message}</span>}
 
                 <button type="submit" className={"bg-primary text-primary-foreground p-2 rounded-lg w-1/2"} disabled={loginMutation.isPending}>
-                    {loginMutation.isPending ? "Logging in..." : "LoginPage"}
+                    {loginMutation.isPending ? "Logging in..." : "Login"}
                 </button>
 
                 {loginMutation.error && <span className={"text-red-500"}>{loginMutation.error.message}</span>}

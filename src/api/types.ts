@@ -16,3 +16,12 @@ export type RegisterRequest = {
 export type RegisterResponse = {
     token: string;
 }
+
+export type Company = {
+    id: number;
+    name: string;
+    description: string;
+    location: string;
+    websiteUrl: string;
+    logoUrl: string;
+}
