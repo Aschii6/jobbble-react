@@ -10,6 +10,7 @@ import CompanyDetailsPage from "@/pages/company-details-page.tsx";
 import NewCompanyPage from "@/pages/new-company-page.tsx";
 import ApplicationsPage from "@/pages/applications-page.tsx";
 import ApplicationDetailsPage from "@/pages/application-details-page.tsx";
+import NewApplicationPage from "@/pages/new-application-page.tsx";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -76,7 +77,7 @@ const applicationsRoute = createRoute({
 const addApplicationRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/applications/new",
-    component: () => <div>WIP</div>,
+    component: NewApplicationPage,
     beforeLoad: ({location}) => requireAuth(location.pathname),
 })
 
