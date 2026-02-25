@@ -1,5 +1,5 @@
 import authStore from "@/stores/auth-store.ts";
-import type {Application} from "@/api/types.ts";
+import type {Application, ApplicationStep} from "@/api/types.ts";
 import {parseErrorMessage} from "@/api/utils.ts";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL as string;
@@ -81,6 +81,27 @@ export async function updateApplication(applicationId: number, applicationData: 
     if (!response.ok) {
         const message = await parseErrorMessage(response);
         throw new Error(message || "Failed to update application");
+    }
+
+    return response.json();
+}
+
+export async function addApplicationStep(applicationId: number, step: Omit<ApplicationStep, "id">): Promise<Application> {
+    const response = await fetch(`${BASE_URL}/applications/${applicationId}/steps`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${authStore.getState().accessToken}`,
+        },
+        body: JSON.stringify(step),
+    });
+
+    if (response.status === 401) {
+        //
+    }
+    if (!response.ok) {
+        const message = await parseErrorMessage(response);
+        throw new Error(message || "Failed to add application step");
     }
 
     return response.json();

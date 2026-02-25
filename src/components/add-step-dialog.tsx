@@ -12,16 +12,53 @@ import {Input} from "@/components/ui/input.tsx";
 import CalendarWithTime from "@/components/calendar-with-time.tsx";
 import {useState} from "react";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
+import type {NoInfer, QueryObserverResult, Register} from "@tanstack/react-query";
+import type {Application} from "@/api/types.ts";
+import {addApplicationStep} from "@/api/applications.ts";
+import {useParams} from "@tanstack/react-router";
 
 
-function AddStepDialog() {
+interface AddStepDialogProps {
+    onStepAdded?: () => Promise<QueryObserverResult<NoInfer<Application>, Register extends {
+        defaultError: infer TError
+    } ? TError : Error>>
+}
+
+function AddStepDialog({onStepAdded}: AddStepDialogProps) {
     const [date, setDate] = useState<Date | undefined>(new Date());
-    const [time, setTime] = useState<string>("10:30:00");
+    const [time, setTime] = useState<string>("10:30");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
+    const {applicationId} = useParams({from: "/applications/$applicationId"});
+    const parsedApplicationId = Number(applicationId);
+    const hasValidId = Number.isFinite(parsedApplicationId);
+
     const handleSubmit = () => {
-        alert(`Step added with title: ${title}, description: ${description}, date: ${date}, time: ${time}`);
+        if (!hasValidId) {
+            alert("Invalid application ID");
+            return;
+        }
+
+        addApplicationStep(parsedApplicationId, {
+            title,
+            description,
+            date: date ? date.toISOString().split("T")[0] : null,
+            time,
+        })
+            .then(() => {
+                onStepAdded?.();
+                // Reset form state
+                setTitle("");
+                setDescription("");
+                setDate(new Date());
+                setTime("10:30");
+
+                alert("Successfully added!");
+            })
+            .catch((err) => {
+                alert("Failed to add step: " + err.message);
+            });
     }
 
     return (

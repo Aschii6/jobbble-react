@@ -29,7 +29,7 @@ function CalendarWithTime({ date, onDateChange, time, onTimeChange }: CalendarWi
             <CardFooter className="bg-card border-t">
                 <FieldGroup>
                     <Field>
-                        <FieldLabel htmlFor="time">Time (Optional)</FieldLabel>
+                        <FieldLabel htmlFor="time">Time</FieldLabel>
                         <InputGroup>
                             <InputGroupInput
                                 id="time"

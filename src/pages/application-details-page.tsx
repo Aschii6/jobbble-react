@@ -92,7 +92,7 @@ function ApplicationDetailsPage() {
                         </div>
                         <ScrollBar orientation={"horizontal"}/>
                     </ScrollArea>
-                    <AddStepDialog/>
+                    <AddStepDialog onStepAdded={() => refetch().then()}/>
                 </div>
             )}
         </div>
