@@ -8,6 +8,9 @@ import NavBar from "@/components/nav-bar.tsx";
 import CompaniesPage from "@/pages/companies-page.tsx";
 import CompanyDetailsPage from "@/pages/company-details-page.tsx";
 import NewCompanyPage from "@/pages/new-company-page.tsx";
+import ApplicationsPage from "@/pages/applications-page.tsx";
+import ApplicationDetailsPage from "@/pages/application-details-page.tsx";
+import NewApplicationPage from "@/pages/new-application-page.tsx";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -64,6 +67,27 @@ const companyDetailsRoute = createRoute({
     beforeLoad: ({location}) => requireAuth(location.pathname),
 });
 
+const applicationsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/applications",
+    component: ApplicationsPage,
+    beforeLoad: ({location}) => requireAuth(location.pathname),
+});
+
+const addApplicationRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/applications/new",
+    component: NewApplicationPage,
+    beforeLoad: ({location}) => requireAuth(location.pathname),
+})
+
+const applicationDetailsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/applications/$applicationId",
+    component: ApplicationDetailsPage,
+    beforeLoad: ({location}) => requireAuth(location.pathname),
+})
+
 const routeTree = rootRoute.addChildren([
     indexRoute,
     loginRoute,
@@ -72,6 +96,9 @@ const routeTree = rootRoute.addChildren([
     companiesRoute,
     addCompanyRoute,
     companyDetailsRoute,
+    applicationsRoute,
+    addApplicationRoute,
+    applicationDetailsRoute,
 ])
 
 export {routeTree}
