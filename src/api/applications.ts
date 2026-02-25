@@ -44,7 +44,12 @@ export async function fetchApplicationById(applicationId: number): Promise<Appli
     return response.json();
 }
 
-export async function createApplication(applicationData: Omit<Application, "id">): Promise<Application> {
+export async function createApplication(applicationData: {
+    title: string;
+    description: string;
+    status: string;
+    companyId: number;
+}): Promise<Application> {
     const response = await fetch(`${BASE_URL}/applications`, {
         method: "POST",
         headers: {
