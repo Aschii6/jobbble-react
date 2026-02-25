@@ -43,3 +43,45 @@ export async function fetchApplicationById(applicationId: number): Promise<Appli
 
     return response.json();
 }
+
+export async function createApplication(applicationData: Omit<Application, "id">): Promise<Application> {
+    const response = await fetch(`${BASE_URL}/applications`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${authStore.getState().accessToken}`,
+        },
+        body: JSON.stringify(applicationData),
+    });
+
+    if (response.status === 401) {
+        //
+    }
+    if (!response.ok) {
+        const message = await parseErrorMessage(response);
+        throw new Error(message || "Failed to create application");
+    }
+
+    return response.json();
+}
+
+export async function updateApplication(applicationId: number, applicationData: Partial<Application>): Promise<Application> {
+    const response = await fetch(`${BASE_URL}/applications/${applicationId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${authStore.getState().accessToken}`,
+        },
+        body: JSON.stringify(applicationData),
+    });
+
+    if (response.status === 401) {
+        //
+    }
+    if (!response.ok) {
+        const message = await parseErrorMessage(response);
+        throw new Error(message || "Failed to update application");
+    }
+
+    return response.json();
+}

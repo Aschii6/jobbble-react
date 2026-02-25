@@ -1,13 +1,13 @@
 import {useParams} from "@tanstack/react-router";
 import {useQuery} from "@tanstack/react-query";
-import {fetchApplicationById} from "@/api/applications.ts";
+import {fetchApplicationById, updateApplication} from "@/api/applications.ts";
 import {
     Combobox,
     ComboboxContent, ComboboxInput,
     ComboboxItem,
     ComboboxList,
 } from "@/components/ui/combobox.tsx";
-import {APPLICATION_STATUSES} from "@/api/types.ts";
+import {APPLICATION_STATUSES, type ApplicationStatus} from "@/api/types.ts";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
@@ -19,7 +19,7 @@ function ApplicationDetailsPage() {
     const parsedApplicationId = Number(applicationId);
     const hasValidId = Number.isFinite(parsedApplicationId);
 
-    const {isPending, error, data: application} = useQuery({
+    const {isPending, error, data: application, refetch} = useQuery({
         queryKey: ["application", parsedApplicationId],
         queryFn: () => fetchApplicationById(parsedApplicationId),
         refetchOnWindowFocus: false,
@@ -36,7 +36,16 @@ function ApplicationDetailsPage() {
     }
 
     const handleUpdateStatus = () => {
-        alert("Status update functionality is not implemented yet. Selected status: " + status);
+        let applicationToUpdate = application;
+        if (!applicationToUpdate) return;
+
+        applicationToUpdate = {...applicationToUpdate, status: status as ApplicationStatus};
+
+        updateApplication(applicationId, applicationToUpdate)
+            .then(() => {refetch().then()})
+            .catch((err) => {
+                alert("Failed to update application status: " + err.message);
+            });
     }
 
     const displayStatus = status || application?.status;
@@ -50,7 +59,7 @@ function ApplicationDetailsPage() {
                     <h1 className={"text-2xl font-bold"}>{application.title}</h1>
                     <p><span className={"font-semibold"}>Company:</span> {application.company.name}</p>
                     {/*Should use a select here*/}
-                    <Combobox items={APPLICATION_STATUSES} value={displayStatus}  onValueChange={handleStatusChange}>
+                    <Combobox items={APPLICATION_STATUSES} value={displayStatus} onValueChange={handleStatusChange}>
                         <ComboboxInput/>
                         <ComboboxContent>
                             <ComboboxList>
